@@ -1,5 +1,6 @@
 from TweetHandler import handleTweet
 from twitter_cred import *
+from twilio_config import send_message
 
 
 class MaxListener(tweepy.StreamListener):
@@ -14,6 +15,7 @@ class MaxListener(tweepy.StreamListener):
 
     def on_error(self, status_code):
         if status_code == 420:
+            send_message("Twitter Listener lost connection, Killing Script")
             return False
 
 class MaxStream():
