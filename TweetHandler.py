@@ -29,6 +29,13 @@ def send_order(ticker, amount):
 
 def handleTweet(raw_data):
     json_data = json.loads(raw_data)
+    print(json.dumps(json_data, indent=4))
+
+    if json_data["user"]["id"] != "373620043":
+        return
+
+
+
     tickers = json_data["entities"]["symbols"]
     ticker_list = []
     for item in tickers:
