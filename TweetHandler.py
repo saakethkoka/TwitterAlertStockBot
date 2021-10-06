@@ -2,6 +2,7 @@ import json
 import order_manager
 import time
 from twilio_config import send_message
+from params import *
 
 
 def send_order(ticker, amount):
@@ -20,7 +21,7 @@ def send_order(ticker, amount):
     try:
         num_shares = order_manager.get_num_shares(order_id)
         try:
-            order_manager.set_oco_sell_order(ticker, num_shares, 3, 3)
+            order_manager.set_oco_sell_order(ticker, num_shares, stop_loss_percent, limit_up_percent)
         except:
             send_message(ticker + ": Failed to set OCO sell order")
     except:
@@ -50,7 +51,7 @@ def handleTweet(raw_data):
     for ticker in ticker_list:
         if not ticker in mention_list:
             send_message("New ticker tweeted, attempting to bid... " + ticker)
-            send_order(ticker, 200) # Amount of $ to trade
+            send_order(ticker, amount_per_trade) # Amount of $ to trade
             mention_list.append(ticker)
             with open('mention_list.txt', 'w') as f:
                 for item in mention_list:

@@ -1,6 +1,7 @@
 from TweetHandler import handleTweet
 from twitter_cred import *
 from twilio_config import send_message
+from params import *
 
 
 class MaxListener(tweepy.StreamListener):
@@ -23,13 +24,13 @@ class MaxStream():
         self.stream = tweepy.Stream(auth=auth, listener=listener)
 
     def start(self):
-        self.stream.filter(follow=['1118235493030866944'])
+        id_number = api.get_user(user_to_track).id
+        self.stream.filter(follow=[str(id_number)])
 
 if __name__ == '__main__':
 
     listener = MaxListener()
 
-    print(api.get_user('YatesInvesting'))
 
     stream = MaxStream(auth, listener)
     stream.start()
