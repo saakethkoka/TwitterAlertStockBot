@@ -29,9 +29,11 @@ def send_order(ticker, amount):
 
 def handleTweet(raw_data):
     json_data = json.loads(raw_data)
-    print(json.dumps(json_data, indent=4))
 
-    if json_data["user"]["id"] != "373620043":
+    try:
+        if json_data["user"]["id"] != "373620043":
+            return
+    except:
         return
 
 
@@ -45,7 +47,6 @@ def handleTweet(raw_data):
         for i in range(0, len(mention_list)):
             mention_list[i] = mention_list[i].strip()
 
-    print(ticker_list)
     for ticker in ticker_list:
         if not ticker in mention_list:
             send_message("New ticker tweeted, attempting to bid... " + ticker)

@@ -10,7 +10,6 @@ class MaxListener(tweepy.StreamListener):
         return True
 
     def process_data(self, raw_data):
-        print(raw_data)
         handleTweet(raw_data)
 
     def on_error(self, status_code):
