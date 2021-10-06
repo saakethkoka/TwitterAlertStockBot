@@ -4,12 +4,18 @@ import time
 
 
 def send_order(ticker, amount):
-    order_id = order_manager.send_limit_buy_order(ticker, amount)
+    try:
+        order_id = order_manager.send_limit_buy_order(ticker, amount)
+    except:
+        return
     time.sleep(1)
-    while(not order_manager.order_is_filled(order_id)):
+    for i in range(0, 5):
+        if order_manager.order_is_filled(order_id):
+            break
         order_manager.cancel_order(order_id)
         order_id = order_manager.send_limit_buy_order(ticker, amount)
         time.sleep(1)
+
     try:
         num_shares = order_manager.get_num_shares(order_id)
     except:
