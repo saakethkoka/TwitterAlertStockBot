@@ -16,14 +16,15 @@ def send_order(ticker, amount):
         order_manager.cancel_order(order_id)
         order_id = order_manager.send_limit_buy_order(ticker, amount)
         time.sleep(.1)
+    order_manager.cancel_order(order_id)
     try:
         num_shares = order_manager.get_num_shares(order_id)
+        try:
+            order_manager.set_oco_sell_order(ticker, num_shares, 3, 3)
+        except:
+            send_message(ticker + ": Failed to set OCO sell order")
     except:
         return
-    try:
-        order_manager.set_oco_sell_order(ticker, num_shares, 3, 3)
-    except:
-        send_message(ticker + ": Failed to set OCO sell order")
 
 
 def handleTweet(raw_data):
