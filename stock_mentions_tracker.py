@@ -12,7 +12,7 @@ def run_track_mentions():
             for i in range(0, len(mention_list)):
                 mention_list[i] = mention_list[i].strip()
     
-        for status in tweepy.Cursor(api.user_timeline, screen_name='MrZackMorris', tweet_mode="extended").items():
+        for status in tweepy.Cursor(api.user_timeline, screen_name='YatesInvesting', tweet_mode="extended").items():
             if status.full_text[0] == 'R' and status.full_text[1] == 'T':
                 continue
             for ticker in status.entities["symbols"]:

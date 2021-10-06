@@ -23,13 +23,13 @@ class MaxStream():
         self.stream = tweepy.Stream(auth=auth, listener=listener)
 
     def start(self):
-        self.stream.filter(follow=['373620043'])
+        self.stream.filter(follow=['1118235493030866944'])
 
 if __name__ == '__main__':
 
     listener = MaxListener()
 
-    print(api.get_user('MrZackMorris'))
+    print(api.get_user('YatesInvesting'))
 
     stream = MaxStream(auth, listener)
     stream.start()
