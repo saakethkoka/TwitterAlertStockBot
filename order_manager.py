@@ -10,11 +10,9 @@ try:
     c = auth.client_from_token_file(TDA_config.token_path, TDA_config.api_key)
 except FileNotFoundError:
     from selenium import webdriver
-    with webdriver.Chrome(executable_path= '/Users/saakethkoka/Documents/Stonks/Code/GammaSqueezeIdentifier/chromedriver') as driver:
+    with webdriver.Chrome(executable_path= '/Users/saakethkoka/Documents/Stonks/Code/TwitterFrontRunner/chromedriver') as driver:
         c = auth.client_from_login_flow(
             driver, TDA_config.api_key, TDA_config.redirect_uri, TDA_config.token_path)
-
-
 
 
 def send_limit_buy_order(ticker, max_amount):

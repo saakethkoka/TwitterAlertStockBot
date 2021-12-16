@@ -8,8 +8,12 @@ from params import *
 def send_order(ticker, amount):
     try:
         order_id = order_manager.send_limit_buy_order(ticker, amount)
-    except:
+    except Exception as e:
+        print(e)
         return
+
+    print("Order ID: " + str(order_id))
+
     time.sleep(1)
     for i in range(0, 4):
         if order_manager.order_is_filled(order_id):
@@ -29,10 +33,17 @@ def send_order(ticker, amount):
 
 
 def handleTweet(raw_data):
+    print("Handling tweet")
     json_data = json.loads(raw_data)
+    print(json_data)
+    try:
+        print(json_data["text"])
+    except:
+        return
 
     try:
-        if json_data["user"]["id"] != "373620043":
+        if json_data["user"]["id"] != user_id_number:
+            print("User ID does not match")
             return
     except:
         return

@@ -26,8 +26,7 @@ class MaxStream():
     def start(self):
         while True:
             try:
-                id_number = api.get_user(user_to_track).id
-                self.stream.filter(follow=[str(id_number)])
+                self.stream.filter(follow=[str(user_id_number)])
             except:
                 time.sleep(300)
 
