@@ -1,4 +1,3 @@
-import json
 import order_manager
 import time
 from twilio_config import send_message
