@@ -59,8 +59,15 @@ def handleTweet(raw_data):
         for i in range(0, len(mention_list)):
             mention_list[i] = mention_list[i].strip()
 
+
+
+
     for ticker in ticker_list:
         if not ticker in mention_list:
+            fundamental_data = order_manager.c.search_instruments(ticker, projection=order_manager.c.Instrument.Projection.FUNDAMENTAL).json()
+            if fundamental_data[ticker]["fundamental"]["marketCap"] > market_cap_threshold:
+                print("Market cap too high")
+                return
             send_message("New ticker tweeted, attempting to bid... " + ticker)
             send_order(ticker, amount_per_trade) # Amount of $ to trade
             mention_list.append(ticker)

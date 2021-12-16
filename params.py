@@ -4,6 +4,9 @@ import json
 user_to_track = "SaakethKoka"
 user_id_number = api.get_user(user_to_track).id
 
+# Maximum Market Cap stock to buy (Millions)
+market_cap_threshold = 1000
+
 # $ amount towards each trade
 amount_per_trade = 2
 

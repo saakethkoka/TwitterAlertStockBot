@@ -14,6 +14,7 @@ except FileNotFoundError:
         c = auth.client_from_login_flow(
             driver, TDA_config.api_key, TDA_config.redirect_uri, TDA_config.token_path)
 
+print()
 
 def send_limit_buy_order(ticker, max_amount):
     price = c.get_quote(ticker).json()[ticker]["askPrice"]
