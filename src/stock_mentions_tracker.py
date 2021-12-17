@@ -22,9 +22,8 @@ def run_track_mentions(screen_name):
                     mention_list.append(ticker)
             time.sleep(.1)
             i += 1
-    
 
-        with open('mention_list.txt', 'w') as f:
+        with open('src/mention_list.txt', 'w') as f:
             for item in mention_list:
                 f.writelines(item + '\n')
 
