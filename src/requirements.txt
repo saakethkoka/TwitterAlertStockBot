@@ -2,3 +2,4 @@
  tda-api
  tdameritrade
  twilio~7.0.0
+ selenium~3.141.0
