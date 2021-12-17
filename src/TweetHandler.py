@@ -2,20 +2,19 @@ import order_manager
 import time
 from twilio_config import send_message
 from params import *
+from logging_config import logger
 
 
 def send_order(ticker, amount):
     try:
         order_id = order_manager.send_limit_buy_order(ticker, amount)
     except Exception as e:
-        print(e)
+        logger.error(e)
         return
-
-    print("Order ID: " + str(order_id))
-
     time.sleep(1)
     for i in range(0, 4):
         if order_manager.order_is_filled(order_id):
+            logger.info("Order filled: " + ticker + " " + str(order_id))
             break
         order_manager.cancel_order(order_id)
         order_id = order_manager.send_limit_buy_order(ticker, amount)
@@ -26,8 +25,10 @@ def send_order(ticker, amount):
         try:
             order_manager.set_oco_sell_order(ticker, num_shares, stop_loss_percent, limit_up_percent)
         except:
+            logger.error("Could not set OCO sell order")
             send_message(ticker + ": Failed to set OCO sell order")
     except:
+        logger.error("Could not fill order")
         return
 
 
@@ -36,13 +37,12 @@ def handleTweet(raw_data):
     json_data = json.loads(raw_data)
     print(json_data)
     try:
-        print(json_data["text"])
+        logger.info("Tweet: " + json_data['text'])
     except:
         return
 
     try:
         if json_data["user"]["id"] != user_id_number:
-            print("User ID does not match")
             return
     except:
         return
@@ -65,7 +65,7 @@ def handleTweet(raw_data):
         if not ticker in mention_list:
             fundamental_data = order_manager.c.search_instruments(ticker, projection=order_manager.c.Instrument.Projection.FUNDAMENTAL).json()
             if fundamental_data[ticker]["fundamental"]["marketCap"] > market_cap_threshold:
-                print("Market cap too high")
+                logger.info("Market cap of " + ticker + " is greater than " + str(market_cap_threshold))
                 return
             send_message("New ticker tweeted, attempting to bid... " + ticker)
             send_order(ticker, amount_per_trade) # Amount of $ to trade
@@ -73,3 +73,5 @@ def handleTweet(raw_data):
             with open('mention_list.txt', 'w') as f:
                 for item in mention_list:
                     f.writelines(item + '\n')
+        else:
+            logger.info("Already mentioned: " + ticker)
