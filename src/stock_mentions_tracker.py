@@ -3,7 +3,7 @@ import time
 from params import *
 import logging
 
-
+# Tracks which stocks are mentioned in the twitter stream
 def run_track_mentions(screen_name):
     maxTweetsParsed = 0
     while(True):

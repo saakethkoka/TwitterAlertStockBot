@@ -31,14 +31,15 @@ def send_order(ticker, amount):
         logger.error("Could not fill order")
         return
 
-
+# Processes a tweet
 def handleTweet(raw_data):
     json_data = json.loads(raw_data)
+    # Checking if it is a tweet or a deleted message
     try:
         logger.info("Tweet: " + json_data['text'])
     except:
         return
-
+    # Checking if it is a tweet from the correct user
     try:
         if json_data["user"]["id"] != user_id_number:
             return
@@ -46,7 +47,7 @@ def handleTweet(raw_data):
         return
 
 
-
+    # Grabbing the tickers mentioned in the tweet
     tickers = json_data["entities"]["symbols"]
     ticker_list = []
     for item in tickers:
@@ -60,13 +61,16 @@ def handleTweet(raw_data):
 
 
     for ticker in ticker_list:
+        # Making sure that the ticker is a fresh call from our user
         if not ticker in mention_list:
             fundamental_data = order_manager.c.search_instruments(ticker, projection=order_manager.c.Instrument.Projection.FUNDAMENTAL).json()
+            # Checking if the stock trades at a lower market cap than our threshold
             if fundamental_data[ticker]["fundamental"]["marketCap"] > market_cap_threshold:
                 logger.info("Market cap of " + ticker + " is greater than " + str(market_cap_threshold))
                 return
             send_message("New ticker tweeted, attempting to bid... " + ticker)
             send_order(ticker, amount_per_trade) # Amount of $ to trade
+            # Adding ticker to the list of tickers our user has already mentioned
             mention_list.append(ticker)
             with open('src/mention_list.txt', 'w') as f:
                 for item in mention_list:
