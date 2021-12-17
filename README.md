@@ -98,7 +98,7 @@ python src/stock_mentions_tracker.py
 ```
 
 In order to run these bots in detached mode and
-not have to worry about terminating them when clossing the shell, you
+not have to worry about terminating them when closing the shell, you
 can use nohup:
 ```
 nohup python src/TweetListener.py &
