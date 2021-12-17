@@ -1,18 +1,19 @@
 from twitter_cred import *
-import json
 import time
+from params import *
+import logging
 
 
-def run_track_mentions():
+def run_track_mentions(screen_name):
     maxTweetsParsed = 0
     while(True):
         i = 0
-        with open('mention_list.txt', 'r') as f:
+        with open('src/mention_list.txt', 'r') as f:
             mention_list = f.readlines()
             for i in range(0, len(mention_list)):
                 mention_list[i] = mention_list[i].strip()
     
-        for status in tweepy.Cursor(api.user_timeline, screen_name='YatesInvesting', tweet_mode="extended").items():
+        for status in tweepy.Cursor(api.user_timeline, screen_name=screen_name, tweet_mode="extended").items():
             if status.full_text[0] == 'R' and status.full_text[1] == 'T':
                 continue
             for ticker in status.entities["symbols"]:
@@ -29,7 +30,7 @@ def run_track_mentions():
 
         if i > maxTweetsParsed:
             maxTweetsParsed = i
-            print("Max Tweets Parsed by Stock Mentions Tracker:", maxTweetsParsed)
+            logging.info("Max Tweets Parsed by Stock Mentions Tracker:", maxTweetsParsed)
         time.sleep(1800)
 
-run_track_mentions()
+run_track_mentions(user_to_track)

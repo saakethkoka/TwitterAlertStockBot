@@ -1,7 +1,7 @@
 from twitter_cred import *
 import json
 # Which Twitter user to track
-user_to_track = "SaakethKoka"
+user_to_track = "elonmusk"
 user_id_number = api.get_user(user_to_track).id
 
 # Maximum Market Cap stock to buy (Millions)

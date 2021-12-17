@@ -33,9 +33,7 @@ def send_order(ticker, amount):
 
 
 def handleTweet(raw_data):
-    print("Handling tweet")
     json_data = json.loads(raw_data)
-    print(json_data)
     try:
         logger.info("Tweet: " + json_data['text'])
     except:
@@ -53,7 +51,7 @@ def handleTweet(raw_data):
     ticker_list = []
     for item in tickers:
         ticker_list.append(item['text'].upper())
-    with open('mention_list.txt', 'r') as f:
+    with open('src/mention_list.txt', 'r') as f:
         mention_list = f.readlines()
         for i in range(0, len(mention_list)):
             mention_list[i] = mention_list[i].strip()
@@ -70,7 +68,7 @@ def handleTweet(raw_data):
             send_message("New ticker tweeted, attempting to bid... " + ticker)
             send_order(ticker, amount_per_trade) # Amount of $ to trade
             mention_list.append(ticker)
-            with open('mention_list.txt', 'w') as f:
+            with open('src/mention_list.txt', 'w') as f:
                 for item in mention_list:
                     f.writelines(item + '\n')
         else:

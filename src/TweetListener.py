@@ -3,6 +3,7 @@ from twitter_cred import *
 from twilio_config import send_message
 from params import *
 import time
+from logging_config import logger
 
 class MaxListener(tweepy.StreamListener):
 
@@ -28,6 +29,7 @@ class MaxStream():
             try:
                 self.stream.filter(follow=[str(user_id_number)])
             except:
+                logger.error("Twitter Listener lost connection, Restarting")
                 time.sleep(300)
 
 
